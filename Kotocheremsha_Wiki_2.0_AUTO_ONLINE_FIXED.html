@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kotocheremsha Wiki 2.0 AUTO ONLINE</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#152238;--muted:#718096;--line:#e4e9f1;--a:#2563eb;--b:#7c3aed;--shadow:0 14px 40px #243b5314}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px Inter,system-ui,-apple-system,Segoe UI,sans-serif}button,input,textarea,select{font:inherit}button{border:0;cursor:pointer}.top{height:70px;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 20px;position:sticky;top:0;z-index:20}.brand{font-weight:900;font-size:20px;display:flex;align-items:center;gap:10px}.logo{padding:8px 10px;border-radius:13px;background:linear-gradient(135deg,var(--a),var(--b));color:#fff}.search{margin-left:auto;width:min(420px,42vw);padding:11px 14px;border:1px solid var(--line);border-radius:13px;background:#f3f5f9;outline:none}.wallet{margin-left:12px;background:#fff4bd;padding:10px 13px;border-radius:13px;font-weight:800}.layout{display:grid;grid-template-columns:235px 1fr;max-width:1350px;margin:auto}.side{min-height:calc(100vh - 70px);border-right:1px solid var(--line);padding:18px 12px}.side button{display:block;width:100%;text-align:left;padding:12px 14px;background:transparent;border-radius:12px;margin:3px 0;font-weight:700;color:inherit}.side button:hover,.side button.active{background:#eaf1ff;color:#175bd6}.main{padding:25px;min-width:0}.hero{border-radius:26px;padding:32px;background:linear-gradient(120deg,#e8f4ff,#f2eaff);box-shadow:var(--shadow);display:flex;justify-content:space-between;align-items:center;gap:20px}.hero h1{font-size:38px;margin:0 0 8px}.hero p{color:#53657e;max-width:720px}.primary{background:linear-gradient(135deg,var(--a),var(--b));color:#fff;padding:11px 16px;border-radius:12px;font-weight:800}.secondary{background:#edf1f6;color:inherit;padding:10px 14px;border-radius:11px;font-weight:750}.section{margin-top:26px}.section h2{margin:0 0 14px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.news{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}.muted{color:var(--muted)}.tag{display:inline-flex;background:#eef2ff;color:#3957a8;border-radius:9px;padding:6px 9px;margin:3px;font-weight:750}.countryIcon{width:48px;height:48px;border-radius:14px;background:#eef5ff;display:grid;place-items:center;font-size:25px}.countryRow{display:flex;gap:12px;align-items:center}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.between{display:flex;justify-content:space-between;gap:10px;align-items:center}.modalbg{display:none;position:fixed;inset:0;background:#071326aa;z-index:50;align-items:center;justify-content:center;padding:16px}.modal{width:min(560px,100%);max-height:90vh;overflow:auto;background:var(--card);border-radius:22px;padding:22px}.modal input,.modal textarea,.modal select{width:100%;padding:12px;margin:6px 0;border:1px solid var(--line);border-radius:11px;background:var(--card);color:inherit}.modal textarea{min-height:120px;resize:vertical}.chat{height:55vh;overflow:auto;display:flex;flex-direction:column;gap:8px}.msg{max-width:78%;padding:10px 13px;border-radius:14px;background:#edf2f8}.msg.mine{align-self:flex-end;background:#e5edff}.bottom{display:none}.toast{position:fixed;right:18px;bottom:18px;background:#172033;color:#fff;padding:12px 16px;border-radius:13px;z-index:100;box-shadow:var(--shadow)}body.dark{--bg:#0d1420;--card:#151e2c;--text:#eef4ff;--muted:#a6b4c8;--line:#29364a}body.dark .top{background:#111a27}body.dark .search{background:#1c2737;color:#fff}.space{--bg:#050816;--card:#0d1530;--text:#eef5ff;--muted:#9db1d7;--line:#26345b}.space .hero{background:radial-gradient(circle at 15% 10%,#253e98,#160f38 58%,#070914);color:#fff}.space .hero p{color:#c1cff0}.space .side button.active{background:#18285a;color:#8dbbff}
+@media(max-width:850px){.layout{display:block}.side{display:none}.main{padding:15px 13px 84px}.top{padding:0 12px}.brand{font-size:16px}.search{width:40px;font-size:0;padding:10px}.wallet{font-size:12px;margin-left:6px}.hero{display:block;padding:23px}.hero h1{font-size:29px}.hero button{margin-top:8px}.grid,.news{grid-template-columns:1fr}.bottom{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);z-index:30;justify-content:space-around;padding:6px}.bottom button{background:transparent;color:inherit;font-size:10px}.bottom b{display:block;font-size:19px}}
+</style></head><body>
+<header class="top"><div class="brand"><span class="logo">🐱</span>Kotocheremsha Wiki <small style="opacity:.55">2.0</small></div><input class="search" placeholder="🔎 Поиск..." oninput="search(this.value)"><div class="wallet">🪙 <b id="coins">0</b></div></header>
+<div class="layout"><aside class="side" id="side"></aside><main class="main" id="main"></main></div>
+<nav class="bottom"><button onclick="home()">🏠<b>Главная</b></button><button onclick="countries()">🌍<b>Страны</b></button><button onclick="create()">➕<b>Создать</b></button><button onclick="chat()">💬<b>Чат</b></button><button onclick="profile()">👤<b>Профиль</b></button><button onclick="settings()">⚙️<b>Настройки</b></button></nav>
+<div class="modalbg" id="mb"><div class="modal" id="modal"></div></div>
+<script>
+const AUTO_SUPABASE_URL='https://zilhzuxmpcfbjeejdtuo.supabase.co';
+const AUTO_SUPABASE_KEY='';
+const CONFIG=(()=>{try{const saved=JSON.parse(localStorage.getItem('kw20_supabase')||'{}');return {url:AUTO_SUPABASE_URL,key:AUTO_SUPABASE_KEY||saved.key||''}}catch(e){return {url:AUTO_SUPABASE_URL,key:AUTO_SUPABASE_KEY||''}}})();let sb=null,session=null;const main=document.getElementById('main'),side=document.getElementById('side'),mb=document.getElementById('mb'),modal=document.getElementById('modal');
+let local={coins:20,profile:null,countries:[],news:[],articles:[],messages:[],theme:'light',lang:'ru'};
+try{local={...local,...JSON.parse(localStorage.getItem('kw20')||'{}')}}catch(e){}
+const eventList=[['Новый год','🎄','12'],['День святого Валентина','💖','2'],['Весенний фестиваль','🌸','3'],['Летний фестиваль','☀️','6'],['Осенний фестиваль','🍂','9'],['Хэллоуин','🎃','10']];
+function ev(){let m=new Date().getMonth()+1;return eventList.find(x=>x[2]==m)||['Мир Kotocheremsha','🌍','0']}
+function esc(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}function save(){localStorage.setItem('kw20',JSON.stringify(local));document.getElementById('coins').textContent=local.coins}function toast(x){let t=document.createElement('div');t.className='toast';t.textContent=x;document.body.appendChild(t);setTimeout(()=>t.remove(),2400)}
+function open(x){modal.innerHTML=x;mb.style.display='flex'}function closeM(){mb.style.display='none'}
+function nav(active='home'){let items=[['home','🏠 Главная'],['countries','🌍 Страны'],['news','📰 Новости'],['create','➕ Создать'],['chat','💬 Онлайн-чат'],['eventsPage','🎉 Ивенты'],['profile','👤 Профиль'],['ach','🏆 Достижения'],['shop','🛍️ Магазин'],['settings','⚙️ Настройки']];if(isAdmin())items.push(['adminPage','🛡️ Админ-панель']);side.innerHTML=items.map(([f,n])=>`<button class="${active==f?'active':''}" onclick="${f}()">${n}</button>`).join('')}
+async function init(){save();nav();applyTheme();if(CONFIG.url&&CONFIG.key){await connectSupabase(CONFIG.url,CONFIG.key,false)}else renderLocal();home()}
+async function connectSupabase(url,key,showToast=true){
+  try{
+    if(typeof supabase==='undefined'||!supabase.createClient){throw new Error('Библиотека Supabase не загрузилась. Проверь интернет-соединение.')}
+    const cleanUrl=url.trim().replace(/\/$/,''); const cleanKey=key.trim();
+    sb=supabase.createClient(cleanUrl,cleanKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+    const r=await sb.auth.getSession();
+    if(r.error) throw r.error;
+    session=r.data.session||null;
+    sb.auth.onAuthStateChange((_e,s)=>{session=s;renderAuth();if(s)loadDB()});
+    localStorage.setItem('kw20_supabase',JSON.stringify({url:cleanUrl,key:cleanKey}));
+    await loadDB();
+    subscribe();
+    renderAuth();
+    if(showToast)toast('🟢 Supabase подключён!');
+    settings();
+    return true;
+  }catch(e){
+    sb=null; session=null;
+    if(showToast)toast('❌ Не удалось подключить: '+(e?.message||'проверь URL и публичный ключ'));
+    else console.error(e);
+    settings();
+    return false;
+  }
+}
+async function ensureProfile(){
+  if(!sb||!session?.user)return null;
+  let me=await sb.from('profiles').select('*').eq('id',session.user.id).maybeSingle();
+  if(me.error)return null;
+  if(me.data){local.profile=me.data;local.coins=me.data.coins??20;return me.data}
+  // No profile yet: the first profile created in the shared database becomes owner.
+  // This requires no manual SQL; it uses the existing profiles table.
+  let countRes=await sb.from('profiles').select('id',{count:'exact',head:true});
+  if(countRes.error)return null;
+  const first=(countRes.count||0)===0;
+  const username=(session.user.user_metadata?.username||session.user.email?.split('@')[0]||'Пользователь').slice(0,40);
+  const ins=await sb.from('profiles').insert({id:session.user.id,username,coins:20,role:first?'owner':'user'}).select('*').single();
+  if(ins.error){
+    // Another user may have created a profile at the same time; load ours again.
+    const retry=await sb.from('profiles').select('*').eq('id',session.user.id).maybeSingle();
+    if(retry.data){local.profile=retry.data;local.coins=retry.data.coins??20;return retry.data}
+    return null;
+  }
+  local.profile=ins.data;local.coins=ins.data?.coins??20;
+  if(first) setTimeout(()=>toast('👑 Ты первый пользователь KW — ты главный владелец!'),250);
+  return ins.data;
+}
+async function loadDB(){if(!sb)return;
+  const errors=[];
+  if(session){
+    const prof=await ensureProfile();
+    if(!prof) errors.push('profiles: не удалось создать или загрузить профиль');
+  }
+  const [c,n,a,m]=await Promise.all([
+    sb.from('countries').select('*').order('created_at',{ascending:false}),
+    sb.from('news').select('*').order('created_at',{ascending:false}),
+    sb.from('articles').select('*').order('created_at',{ascending:false}),
+    sb.from('chat_messages').select('*').order('created_at',{ascending:true}).limit(100)
+  ]);
+  if(c.error) errors.push('countries: '+c.error.message); else local.countries=c.data||[];
+  if(n.error) errors.push('news: '+n.error.message); else local.news=n.data||[];
+  if(a.error) errors.push('articles: '+a.error.message); else local.articles=a.data||[];
+  if(m.error) errors.push('chat: '+m.error.message); else local.messages=m.data||[];
+  if(errors.length) console.warn('Supabase:',errors.join(' | '));
+}
+function subscribe(){if(!sb)return;sb.channel('kw-live').on('postgres_changes',{event:'*',schema:'public',table:'chat_messages'},()=>loadDB().then(chat)).on('postgres_changes',{event:'*',schema:'public',table:'countries'},()=>loadDB().then(countries)).on('postgres_changes',{event:'*',schema:'public',table:'news'},()=>loadDB().then(home)).subscribe()}
+function renderAuth(){save();nav()}
+function isAdmin(){return !!(session&&local.profile&&['owner','admin'].includes(local.profile.role))}
+function isOwner(){return !!(session&&local.profile&&local.profile.role==='owner')}
+function adminGuard(){if(!isAdmin()){toast('⛔ Доступ только для главного администратора');return false}return true}
+function home(){nav('home');let x=ev();main.innerHTML=`<section class="hero"><div><div class="tag">${x[1]} ${x[0]}</div><h1>🌍 Создавай свой мир</h1><p>Kotocheremsha Wiki 2.0 — место, где пользователи создают виртуальные страны, публикуют статьи, новости, изображения и общаются онлайн.</p><div class="row"><button class="primary" onclick="create()">➕ Создать страну</button><button class="secondary" onclick="eventsPage()">🎉 Ивент</button></div></div><div style="font-size:78px">🌐</div></section><section class="section"><div class="between"><h2>📰 Последние новости</h2><button class="secondary" onclick="showNews()">Все</button></div><div class="news">${(local.news||[]).slice(0,4).map(n=>`<article class="card"><b>${esc(n.title)}</b><p>${esc(n.text)}</p><span class="muted">🌍 ${esc(n.country||'Мир')}</span></article>`).join('')||'<div class="card">Пока новостей нет. Создай первую 🚀</div>'}</div></section><section class="section"><h2>🌍 Страны сообщества</h2><div class="grid">${(local.countries||[]).slice(0,6).map(c=>countryCard(c)).join('')||'<div class="card">Пока никто не создал страну. Будешь первым?</div>'}</div></section><section class="section"><h2>✨ Что нового в 2.0</h2><div class="grid"><div class="card"><h3>☁️ Онлайн-база</h3><p class="muted">Общие страны, новости, профили и сообщения.</p></div><div class="card"><h3>💬 Реальный чат</h3><p class="muted">Сообщения обновляются через Realtime при подключённой базе.</p></div><div class="card"><h3>🎉 Авто-ивенты</h3><p class="muted">Ивент меняется по месяцу и праздникам.</p></div></div></section>`}
+function countryCard(c){return `<div class="card countryRow"><div class="countryIcon">🏳️</div><div><h3 style="margin:0">${esc(c.name)}</h3><div class="muted">Столица: ${esc(c.capital||'—')}</div><button class="secondary" onclick="countryPage('${esc(c.id||'')}')">Открыть</button></div></div>`}
+async function countries(){nav('countries');if(sb)await loadDB();main.innerHTML=`<div class="between"><h1>🌍 Страны</h1><button class="primary" onclick="countryForm()">➕ Создать</button></div><div class="grid">${(local.countries||[]).map(countryCard).join('')||'<div class="card">Стран пока нет.</div>'}</div>`}
+async function countryPage(id){let c=(local.countries||[]).find(x=>String(x.id)==String(id));if(!c)return countries();main.innerHTML=`<button class="secondary" onclick="countries()">← Назад</button><section class="card" style="margin-top:12px"><div class="countryIcon" style="font-size:40px">🏳️</div><h1>${esc(c.name)}</h1><p><b>Столица:</b> ${esc(c.capital||'—')}</p><p><b>Язык:</b> ${esc(c.language||'—')}</p><p><b>Валюта:</b> ${esc(c.currency||'—')}</p><h2>📖 О стране</h2><p>${esc(c.description||'Описание пока не добавлено.')}</p></section>`}
+function countryForm(){open(`<h2>🏳️ Новая страна</h2><input id="cn" placeholder="Название"><input id="cc" placeholder="Столица"><input id="cl" placeholder="Язык"><input id="cv" placeholder="Валюта"><textarea id="cd" placeholder="Описание страны"></textarea><div class="row"><button class="secondary" onclick="closeM()">Отмена</button><button class="primary" onclick="makeCountry()">Создать</button></div>`)}
+async function makeCountry(){let v={name:cn.value.trim(),capital:cc.value.trim(),language:cl.value.trim(),currency:cv.value.trim(),description:cd.value.trim()};if(!v.name||!v.capital)return toast('Укажи название и столицу');if(sb&&session){let r=await sb.from('countries').insert({...v,owner_id:session.user.id}).select().single();if(r.error)return toast(r.error.message);local.countries.unshift(r.data)}else{v.id=crypto.randomUUID();local.countries.unshift(v)}local.coins+=20;save();closeM();toast('Страна создана! +20 🪙');countries()}
+function showNews(){nav('news');main.innerHTML=`<div class="between"><h1>📰 Новости</h1><button class="primary" onclick="newsForm()">➕ Новость</button></div>${local.news.map(n=>`<article class="card" style="margin-top:12px"><h3>${esc(n.title)}</h3><p>${esc(n.text)}</p><span class="muted">🌍 ${esc(n.country||'Мир')}</span></article>`).join('')||'<div class="card">Новостей пока нет.</div>'}`}
+function newsForm(){open(`<h2>📰 Новость</h2><input id="nt" placeholder="Заголовок"><input id="nc" placeholder="Страна / мир"><textarea id="nx" placeholder="Текст новости"></textarea><div class="row"><button class="secondary" onclick="closeM()">Отмена</button><button class="primary" onclick="makeNews()">Опубликовать</button></div>`)}
+async function makeNews(){if(!nt.value.trim()||!nx.value.trim())return toast('Заполни заголовок и текст');let v={title:nt.value.trim(),text:nx.value.trim(),country:nc.value.trim()||'Мир'};if(sb&&session){let r=await sb.from('news').insert({...v,author_id:session.user.id}).select().single();if(r.error)return toast(r.error.message);local.news.unshift(r.data)}else{v.id=crypto.randomUUID();local.news.unshift(v)}local.coins+=5;save();closeM();toast('Новость опубликована! +5 🪙');showNews()}
+function articleForm(){open(`<h2>📝 Новая статья</h2><input id="at" placeholder="Название"><textarea id="ax" placeholder="Содержание"></textarea><div class="row"><button class="secondary" onclick="closeM()">Отмена</button><button class="primary" onclick="makeArticle()">Опубликовать</button></div>`)}
+async function makeArticle(){if(!at.value.trim()||!ax.value.trim())return toast('Заполни статью');let v={title:at.value.trim(),text:ax.value.trim()};if(sb&&session){let r=await sb.from('articles').insert({...v,author_id:session.user.id}).select().single();if(r.error)return toast(r.error.message);local.articles.unshift(r.data)}else{v.id=crypto.randomUUID();local.articles.unshift(v)}local.coins+=10;save();closeM();toast('Статья опубликована! +10 🪙')}
+function create(){nav('create');main.innerHTML=`<h1>➕ Создать</h1><div class="grid"><div class="card"><h2>🏳️ Страна</h2><p>Создай государство со столицей, языком и валютой.</p><button class="primary" onclick="countryForm()">Создать</button></div><div class="card"><h2>📰 Новость</h2><p>Расскажи о событиях своего мира.</p><button class="primary" onclick="newsForm()">Создать</button></div><div class="card"><h2>📝 Статья</h2><p>Добавь подробную информацию.</p><button class="primary" onclick="articleForm()">Создать</button></div><div class="card"><h2>📸 Медиа</h2><p>Загрузка изображений и видео готова для Supabase Storage.</p><button class="primary" onclick="mediaForm()">Загрузить</button></div></div>`}
+function mediaForm(){open(`<h2>📸 Медиа</h2><input id="mf" type="file" accept="image/*,video/*"><p class="muted">После подключения Supabase Storage файл можно хранить онлайн.</p><div class="row"><button class="secondary" onclick="closeM()">Закрыть</button><button class="primary" onclick="uploadMedia()">Загрузить</button></div>`)}
+async function uploadMedia(){let f=mf.files[0];if(!f)return toast('Выбери файл');if(!sb||!session)return toast('Сначала подключи базу и войди в аккаунт');let path=session.user.id+'/'+Date.now()+'_'+f.name.replace(/[^\w.\-]/g,'_');let r=await sb.storage.from('media').upload(path,f);if(r.error)return toast(r.error.message);toast('Файл загружен в Storage!');closeM()}
+async function chat(){nav('chat');if(sb)await loadDB();main.innerHTML=`<h1>💬 Онлайн-чат</h1><div class="card"><div class="chat" id="chatbox">${local.messages.map(m=>`<div class="msg ${session&&m.user_id==session.user.id?'mine':''}"><b>${esc(m.username||'Участник')}</b><br>${esc(m.text)}</div>`).join('')||'<p class="muted">Чат пуст. Напиши первое сообщение!</p>'}</div><div class="row" style="margin-top:10px"><input id="chatInput" style="flex:1;padding:12px;border:1px solid var(--line);border-radius:11px;background:var(--card);color:inherit" placeholder="Написать сообщение..."><button class="primary" onclick="sendChat()">Отправить</button></div></div>`;setTimeout(()=>{let b=document.getElementById('chatbox');if(b)b.scrollTop=b.scrollHeight},0)}
+async function sendChat(){let t=chatInput.value.trim();if(!t)return;if(sb&&session){let r=await sb.from('chat_messages').insert({user_id:session.user.id,username:session.user.email?.split('@')[0]||'Участник',text:t});if(r.error)return toast(r.error.message)}else local.messages.push({id:crypto.randomUUID(),username:'Вы',text:t});chatInput.value='';chat()}
+function eventsPage(){nav('events');let x=ev();main.innerHTML=`<h1>🎉 Ивенты</h1><div class="card"><div style="font-size:70px">${x[1]}</div><h2>${x[0]}</h2><p class="muted">Ивент автоматически выбирается по календарю. В будущем сюда можно добавить задания, награды и временный дизайн.</p></div><div class="grid section">${eventList.map(e=>`<div class="card"><b>${e[1]} ${e[0]}</b><p class="muted">Сезонный ивент</p></div>`).join('')}</div>`}
+function profile(){nav('profile');main.innerHTML=`<h1>👤 Профиль</h1><div class="card"><div style="font-size:55px">🐱</div><h2>${esc(local.profile?.username||'Мой профиль')}</h2><p class="muted">${session?esc(session.user.email):'Локальный режим'}</p><p>🪙 Черемкошки: <b>${local.coins}</b></p><p>🏳️ Стран: <b>${local.countries.length}</b></p><div class="row"><button class="primary" onclick="authForm()">${session?'Профиль / выход':'Войти / регистрация'}</button><button class="secondary" onclick="settings()">⚙️ Настройки</button></div></div>`}
+function authForm(){if(session){return open(`<h2>👤 Аккаунт</h2><p>${esc(session.user.email)}</p><button class="primary" onclick="logout()">Выйти</button>`)}open(`<h2>🔐 Вход / регистрация</h2><input id="ae" type="email" placeholder="Email"><input id="ap" type="password" placeholder="Пароль"><div class="row"><button class="secondary" onclick="closeM()">Закрыть</button><button class="primary" onclick="signup()">Регистрация</button><button class="primary" onclick="login()">Войти</button></div>`)}
+async function signup(){if(!sb)return toast('☁️ Онлайн-база ещё не подключена. Проверь публичный ключ Supabase в конфигурации сайта.');const redirectTo=(location.protocol==='http:'||location.protocol==='https:')?location.href:null;const options=redirectTo?{emailRedirectTo:redirectTo}:{};let r=await sb.auth.signUp({email:ae.value,password:ap.value,options});if(r.error)return toast(r.error.message);toast('Регистрация создана! Проверь почту. Ссылка вернёт тебя на сайт.');closeM()}
+async function login(){if(!sb)return toast('Сначала подключи Supabase');let r=await sb.auth.signInWithPassword({email:ae.value,password:ap.value});if(r.error)return toast(r.error.message);closeM();await loadDB();profile()}
+async function logout(){await sb?.auth.signOut();session=null;local.profile=null;toast('Вы вышли');closeM();profile()}
+function ach(){nav('ach');main.innerHTML=`<h1>🏆 Достижения</h1><div class="grid"><div class="card"><h2>🌍 Основатель</h2><p class="muted">Создай первую страну.</p></div><div class="card"><h2>📰 Журналист</h2><p class="muted">Опубликуй первую новость.</p></div><div class="card"><h2>🚀 ПРСХАЛЬКО КОСМОС</h2><p class="muted">Секретное достижение открывает космическую тему бесплатно.</p><button class="primary" onclick="spaceUnlock()">Открыть космос</button></div></div>`}
+function spaceUnlock(){local.theme='space';save();applyTheme();toast('🌌 Космическая тема открыта бесплатно!');settings()}
+function shop(){nav('shop');main.innerHTML=`<h1>🛍️ Магазин</h1><p class="muted">Баланс: 🪙 ${local.coins}</p><div class="grid"><div class="card"><h2>🌲 Лесная тема</h2><p>150 🪙</p><button class="primary" onclick="buyTheme('forest',150)">Купить</button></div><div class="card"><h2>🌊 Океанская тема</h2><p>200 🪙</p><button class="primary" onclick="buyTheme('ocean',200)">Купить</button></div><div class="card"><h2>🌌 Космос</h2><p>БЕСПЛАТНО</p><button class="primary" onclick="spaceUnlock()">Получить</button></div><div class="card"><h2>🪙 Черемкошки</h2><p>Зарабатывай их созданием контента и достижениями.</p></div></div>`}
+function buyTheme(t,c){if(local.coins<c)return toast('Не хватает Черемкошек 😿');local.coins-=c;local.theme=t;save();applyTheme();toast('Тема активирована!');shop()}
+function supabaseSettingsHTML(){
+if(AUTO_SUPABASE_KEY) return `<div class="card"><h3>☁️ Онлайн-база</h3><p>🟢 Supabase подключается автоматически. Ручная настройка не требуется.</p></div>`;
+return `<div class="card"><h3>☁️ Подключение онлайн-базы Supabase</h3>
+<p class="muted">Вставь URL проекта и публичный ключ. Секретный ключ сюда не вводи.</p>
+<label>URL проекта</label><input id="surl" type="url" placeholder="https://xxxxxxxx.supabase.co" value="${esc(CONFIG.url||'')}">
+<label>Публикуемый ключ</label><input id="skey" type="text" placeholder="sb_publishable_..." value="${esc(CONFIG.key||'')}">
+<div class="row"><button class="primary" onclick="saveSupabaseConfig()">💾 Сохранить и подключить</button><button class="secondary" onclick="clearSupabaseConfig()">Локальный режим</button></div>
+<p class="muted">После сохранения перезагрузи страницу. Если база подключена, регистрация и общие данные будут работать через Supabase.</p></div>`;
+}
+async function saveSupabaseConfig(){
+const url=(document.getElementById('surl')?.value||'').trim().replace(/\/$/,'');
+const key=(document.getElementById('skey')?.value||'').trim();
+if(!url||!key)return toast('Заполни оба поля');
+if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url))return toast('Проверь URL проекта');
+const ok=await connectSupabase(url,key,true);
+if(ok){toast('✅ Готово! Статус изменён на онлайн.');}
+}
+function clearSupabaseConfig(){
+localStorage.removeItem('kw20_supabase');
+location.reload();
+}
+function settings(){nav('settings');main.innerHTML=`<h1>⚙️ Настройки</h1>${supabaseSettingsHTML()}<div class="card"><h3>🎨 Тема</h3><div class="row"><button class="secondary" onclick="setTheme('light')">Светлая</button><button class="secondary" onclick="setTheme('dark')">Тёмная</button><button class="secondary" onclick="spaceUnlock()">🌌 Космос</button></div><h3>🌐 Язык</h3><select onchange="local.lang=this.value;save();toast('Язык сохранён')"><option value="ru" ${local.lang==='ru'?'selected':''}>Русский</option><option value="en" ${local.lang==='en'?'selected':''}>English</option><option value="uk" ${local.lang==='uk'?'selected':''}>Українська</option></select><h3>📡 Статус</h3><p class="muted">${sb?'🟢 Supabase подключён':'🟡 Локальный режим'}${session?(isAdmin()?'<p>👑 Роль: <b>'+ (isOwner()?'Главный владелец':'Администратор') +'</b></p>':'<p>👤 Роль: пользователь</p>'):''}</p>${sb?'<p class="muted">Общая база активна. Первый созданный профиль автоматически получает роль владельца.</p>':''}</div>`}
+function setTheme(t){local.theme=t;save();applyTheme();settings()}function applyTheme(){document.body.className=local.theme==='dark'?'dark':local.theme==='space'?'space':''}
+function search(q){q=q.trim().toLowerCase();if(!q)return;nav();let cs=local.countries.filter(c=>c.name?.toLowerCase().includes(q));let ns=local.news.filter(n=>(n.title+' '+n.text).toLowerCase().includes(q));main.innerHTML=`<h1>🔎 Поиск: ${esc(q)}</h1><h2>🌍 Страны</h2><div class="grid">${cs.map(countryCard).join('')||'<div class="card">Ничего не найдено.</div>'}</div><h2 class="section">📰 Новости</h2>${ns.map(n=>`<div class="card" style="margin-top:10px"><b>${esc(n.title)}</b><p>${esc(n.text)}</p></div>`).join('')}`}
+
+async function adminPage(){
+  if(!adminGuard())return;
+  nav('adminPage');
+  main.innerHTML='<h1>🛡️ Админ-панель</h1><div class="card"><h3>⏳ Загружаю данные…</h3></div>';
+  const [u,c,n,a,m]=await Promise.all([
+    sb.from('profiles').select('*').order('created_at',{ascending:false}),
+    sb.from('countries').select('*').order('created_at',{ascending:false}),
+    sb.from('news').select('*').order('created_at',{ascending:false}),
+    sb.from('articles').select('*').order('created_at',{ascending:false}),
+    sb.from('chat_messages').select('*').order('created_at',{ascending:false}).limit(100)
+  ]);
+  const err=[u,c,n,a,m].find(x=>x.error);
+  if(err){main.innerHTML=`<h1>🛡️ Админ-панель</h1><div class="card"><h3>❌ Ошибка базы</h3><p>${esc(err.error.message)}</p><p class="muted">Проверь, что таблица profiles доступна для зарегистрированных пользователей.</p></div>`;return}
+  const users=u.data||[], countries=c.data||[], news=n.data||[], articles=a.data||[], messages=m.data||[];
+  main.innerHTML=`<h1>🛡️ Главная админ-панель</h1>
+  <div class="grid"><div class="card"><h2>👥 ${users.length}</h2><p class="muted">Пользователи</p></div><div class="card"><h2>🌍 ${countries.length}</h2><p class="muted">Страны</p></div><div class="card"><h2>📰 ${news.length}</h2><p class="muted">Новости</p></div><div class="card"><h2>📚 ${articles.length}</h2><p class="muted">Статьи</p></div></div>
+  <section class="section"><h2>👥 Пользователи</h2>${users.map(x=>`<div class="card" style="margin-top:8px"><b>${esc(x.username||'Без имени')}</b><p class="muted">${esc(x.id)} · 🪙 ${x.coins??0} · роль: <b>${esc(x.role||'user')}</b></p>${x.id!==session.user.id&&x.role!=='owner'?`<button class="secondary" onclick="setRole('${x.id}','${x.role==='admin'?'user':'admin'}')">${x.role==='admin'?(isOwner()?'Снять админа':'Только владелец может снять'):'Назначить админом'}</button>`:(x.role==='owner'?'<span class="muted"> 👑 Главный владелец KW</span>':'<span class="muted"> 👑 Это твой аккаунт</span>')}</div>`).join('')||'<div class="card">Нет пользователей</div>'}</section>
+  <section class="section"><h2>🌍 Страны</h2>${countries.map(x=>`<div class="card" style="margin-top:8px"><b>${esc(x.name)}</b><p class="muted">Столица: ${esc(x.capital||'—')}</p><button class="secondary" onclick="deleteRow('countries','${x.id}')">🗑️ Удалить</button></div>`).join('')||'<div class="card">Нет стран</div>'}</section>
+  <section class="section"><h2>📰 Новости</h2>${news.map(x=>`<div class="card" style="margin-top:8px"><b>${esc(x.title)}</b><p>${esc(x.text)}</p><button class="secondary" onclick="deleteRow('news','${x.id}')">🗑️ Удалить</button></div>`).join('')||'<div class="card">Нет новостей</div>'}</section>
+  <section class="section"><h2>📚 Статьи</h2>${articles.map(x=>`<div class="card" style="margin-top:8px"><b>${esc(x.title||'Без названия')}</b><p class="muted">${esc(x.text||x.content||'')}</p><button class="secondary" onclick="deleteRow('articles','${x.id}')">🗑️ Удалить</button></div>`).join('')||'<div class="card">Нет статей</div>'}</section>
+  <section class="section"><h2>💬 Последние сообщения</h2>${messages.slice(0,30).map(x=>`<div class="card" style="margin-top:8px"><b>${esc(x.username||x.user_name||'Пользователь')}</b><p>${esc(x.text||x.message||'')}</p><button class="secondary" onclick="deleteRow('chat_messages','${x.id}')">🗑️ Удалить</button></div>`).join('')||'<div class="card">Нет сообщений</div>'}</section>`;
+}
+async function setRole(id,role){if(!adminGuard()||!sb)return;if(id===session.user.id)return toast('👑 Главного владельца нельзя изменить');if(role==='user' && !isOwner())return toast('⛔ Только владелец может снимать администраторов');if(!confirm(role==='admin'?'Назначить этого пользователя админом?':'Снять роль админа?'))return;let r=await sb.from('profiles').update({role}).eq('id',id).neq('role','owner');if(r.error)return toast('❌ '+r.error.message);toast('✅ Роль изменена');await adminPage()}
+async function deleteRow(table,id){if(!adminGuard()||!sb)return;if(!confirm('Удалить этот объект? Действие нельзя отменить.'))return;let r=await sb.from(table).delete().eq('id',id);if(r.error)return toast('❌ '+r.error.message);toast('🗑️ Удалено');await loadDB();await adminPage()}
+
+init();
+</script></body></html>
