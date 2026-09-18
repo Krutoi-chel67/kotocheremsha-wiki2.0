@@ -1,2 +1,2 @@
-# kotocheremsha-wiki2.0
+index.html
 Wiki для RP
